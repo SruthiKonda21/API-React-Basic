@@ -2,6 +2,8 @@ import './App.css';
 import UserList from './UserList';
 import { Routes, Route, NavLink } from 'react-router-dom';
 import UserAdd from './UserAdd';
+import { UserUpdate } from './UserUpdate';
+
 function App() {
     
   return (
@@ -14,7 +16,8 @@ function App() {
 
      <Routes>
       <Route path='/users' element={<UserList/>}/>
-      <Route path='/AddUser' element={<UserAdd />}/>
+      <Route path='/addUser' element={<UserAdd/>}/>
+      <Route path='/update/:id' element={<UserUpdate/>}/>
      </Routes>
     </>
   );

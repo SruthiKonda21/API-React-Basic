@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 function UserList(){
+
+  let navigate=useNavigate()
     let[data,setData]=useState([])
     
         async function getData(){
@@ -17,6 +20,23 @@ function UserList(){
             getData()
           },[])
     
+          async function deleteData(id){
+            // console.log("from delete function")
+            console.log(id)
+           let response= await fetch("http://localhost:3000/users/"+id,{
+            method:'DELETE'
+            })
+            if(response){
+              alert("user deleted successfully")
+              navigate("/users")
+            }
+          }
+
+          async function editUser(id){
+            // console.log("hello update function")
+            navigate("/update/"+id)
+          }
+
           return(
           <>
           <h1>Hello from app</h1>
@@ -30,12 +50,12 @@ function UserList(){
             </ul>
             {
             data.map((user)=>(
-            <ul className='userlist'>
+            <ul key={user.id} className='userlist'>
                 <li>{user.id}</li>
                 <li>{user.name}</li>
                 <li>{user.age}</li>
-                <li><button>Delete</button></li>
-                <li><button>Edit</button></li>
+                <li><button onClick={()=>deleteData(user.id)}>Delete</button></li>
+                <li><button onClick={()=>editUser(user.id)}>Edit</button></li>
                 </ul>
                 ))
                 }
