@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react"
 import { Navigate, useNavigate, useParams } from "react-router-dom"
+import axios from 'axios'
+
 export function UserUpdate() {
+  
 
   let {id}=useParams()
 
@@ -9,30 +12,50 @@ export function UserUpdate() {
 
   let navigate=useNavigate()
 
+  let url="http://localhost:3000/users/"
+
     async function getData(){
-            let response = await fetch("http://localhost:3000/users/"+id)
-      
-            response=await response.json()
 
-            // console.log(response)
-      
-             setName(response.name)
+       try{
+            let response = await axios.get(url+id);
 
-             setAge(response.age)
+            setName(response.data.name)
+            setAge(response.data.age)
+          }catch (error){
+            console.error("Got Error fetching data")
+          }
+            // let response = await fetch("http://localhost:3000/users/"+id)
+      
+            // response=await response.json()
+
+            // // console.log(response)
+      
+            //  setName(response.name)
+
+            //  setAge(response.age)
           }
             useEffect(()=>{
               getData()
             },[])
 
             async function UpdateUser(){
-              let response=await fetch("http://localhost:3000/users/"+id,{
-                method:'PUT',
-                body:JSON.stringify({name,age})
+
+              let response= await axios.put(url+id,{
+                name:name,
+                age:age
               })
-              if(response){
-                alert("User details Updated")
-                navigate("/users")
-              }
+               alert("User details Updated")
+
+               navigate("/users")
+
+              // let response=await fetch("http://localhost:3000/users/"+id,{
+              //   method:'PUT',
+              //   body:JSON.stringify({name,age})
+              // })
+              // if(response){
+              //   alert("User details Updated")
+              //   navigate("/users")
+              // }
             }
   return (
     <>

@@ -1,35 +1,57 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import axios from "axios"
+
 function UserList(){
 
   let navigate=useNavigate()
+
     let[data,setData]=useState([])
+
+    let url="http://localhost:3000/users/"
     
         async function getData(){
-          let response = await fetch("http://localhost:3000/users")
+
+          try{
+            let response = await axios.get(url);
+            setData(response.data)
+          }catch (error){
+            console.error("Got Error fetching data")
+          }
+
+
+          // let response = await fetch("http://localhost:3000/users")
     
-          response=await response.json()
+          // response=await response.json()
     
-          // console.log(response)
+          // // console.log(response)
     
-          setData(response)
+          // setData(response)
         
-          // console.log(data)
+          // // console.log(data)
         }
           useEffect(()=>{
             getData()
           },[])
     
           async function deleteData(id){
-            // console.log("from delete function")
-            console.log(id)
-           let response= await fetch("http://localhost:3000/users/"+id,{
-            method:'DELETE'
-            })
-            if(response){
-              alert("user deleted successfully")
+
+            try{
+              let response=await axios.delete(url+id)
+              alert("User deleted Successfully")
               navigate("/users")
+            }catch(error){
+              console.error("Failed to delete User")
             }
+            // console.log("from delete function")
+          //   console.log(id)
+          //  let response= await fetch("http://localhost:3000/users/"+id,{
+          //   method:'DELETE'
+          //   })
+          //   if(response){
+          //     alert("user deleted successfully")
+          //     navigate("/users")
+          //   }
           }
 
           async function editUser(id){

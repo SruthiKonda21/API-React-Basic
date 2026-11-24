@@ -1,5 +1,6 @@
 import {useState} from 'react'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 function UserAdd(){
 
@@ -10,24 +11,38 @@ function UserAdd(){
 
     let navigate=useNavigate()
 
-    async function addUser(){
-        let response=await fetch(url,{
-             method:'POST',
-             body:JSON.stringify({name,age})
-        })
+     async function addUser(){
 
-        response=await response.json()
-        if(response){
+        try{
+            let response=await axios.post(url,{
+                name:name,
+                age:age
+            })
             alert("User Added Successfully")
             navigate("/Users")
-        }else{
-            alert("User not Added")
+            
+            // console.log(response.data)
+        }catch(error){
+            console.log("Failed to add the user")
         }
 
+    //     let response=await fetch(url,{
+    //          method:'POST',
+    //          body:JSON.stringify({name,age})
+    //     })
 
-        // console.log(response)
-        // console.log(name)
-        // console.log(age)
+    //     response=await response.json()
+    //     if(response){
+    //         alert("User Added Successfully")
+    //         navigate("/Users")
+    //     }else{
+    //         alert("User not Added")
+    //     }
+
+
+    //     // console.log(response)
+    //     // console.log(name)
+    //     // console.log(age)
     }
 
     return(
